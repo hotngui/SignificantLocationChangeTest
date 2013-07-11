@@ -1,46 +1,151 @@
 //
-//  AppDelegate.m
-//  SignificationLocationChangeTest
-//
 //  Created by Joey Jarosz on 7/11/13.
 //  Copyright (c) 2013 hot-n-GUI, Inc. All rights reserved.
 //
 
+#import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
 #import "AppDelegate.h"
+#import "ViewController.h"
+
+
+@interface AppDelegate () <CLLocationManagerDelegate>
+    @property (nonatomic, strong) CLLocationManager *locationManager;
+    @property (nonatomic, weak) ViewController *vc;
+@end
+
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    //
+    self.vc = (ViewController *)self.window.rootViewController;
+    
+    //
+    CLLocationManager *lm = [[CLLocationManager alloc] init];
+    self.locationManager = lm;
+    
+    lm.delegate = self;
+    lm.pausesLocationUpdatesAutomatically = NO;
+    lm.desiredAccuracy = kCLLocationAccuracyBest;
+    lm.distanceFilter = kCLDistanceFilterNone;
+
+    /*
+     * Start normal updates and significant location changes. We use the normal update to 
+     * get an accurate fix, then immediately stop it (in the delegate).
+     */
+    [lm startUpdatingLocation];
+    [lm startMonitoringSignificantLocationChanges];
+    
+    NSLog(@"pausesLocationUpdatesAutomatically: %@", lm.pausesLocationUpdatesAutomatically ? @"YES" : @"NO");
+    NSLog(@"desiredAccuracy: %f", lm.desiredAccuracy);
+    NSLog(@"distanceFilter: %f", lm.distanceFilter);
+    NSLog(@"activityType: %d", lm.activityType);
+    
+    //
+    id backgroundLocation = launchOptions[UIApplicationLaunchOptionsLocationKey];
+    NSLog(@"backgroundLocation: %@", backgroundLocation);
+    
+    //
     return YES;
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    NSLog(@"Will Resign Active");
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    NSLog(@"Did Enter Background");
+    
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
+    {
+        __block UIBackgroundTaskIdentifier bgTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^ {
+            [[UIApplication sharedApplication] endBackgroundTask:bgTask];
+        }];
+        
+        [self.locationManager startUpdatingLocation];
+        
+        if (bgTask != UIBackgroundTaskInvalid) {
+            [[UIApplication sharedApplication] endBackgroundTask:bgTask];
+            bgTask = UIBackgroundTaskInvalid;
+        }
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    NSLog(@"Will Enter Foreground");
+    [self.locationManager startUpdatingLocation];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    NSLog(@"Did Become Active");
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    NSLog(@"Will Terminate");
 }
+
+#pragma mark -
+#pragma mark CLLocationManagerDelegate Protocol
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
+    {
+        __block UIBackgroundTaskIdentifier bgTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^ {
+            [[UIApplication sharedApplication] endBackgroundTask:bgTask];
+        }];
+        
+        [self recordLocations:locations forLocationManager:manager];
+        
+        if (bgTask != UIBackgroundTaskInvalid) {
+            [[UIApplication sharedApplication] endBackgroundTask:bgTask];
+            bgTask = UIBackgroundTaskInvalid;
+        }
+    }
+    else {
+        [self recordLocations:locations forLocationManager:manager];
+    }
+}
+
+//
+// Add a pin to our map. Also stop normal updates (leaving signification location changes running).
+//
+- (void)recordLocations:(NSArray *)locations forLocationManager:(CLLocationManager *)manager
+{
+    CLLocation *location = [locations lastObject];
+    NSLog(@"Longitude: %f\tLatitude: %f", location.coordinate.longitude, location.coordinate.latitude);
+    
+    [self.vc addPin:location];
+    
+    [manager stopUpdatingLocation];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+    NSLog(@"didFailWithError: %@", error);
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFinishDeferredUpdatesWithError:(NSError *)error
+{
+    NSLog(@"didFinishDeferredUpdatesWithError: %@", error);
+}
+
+- (void)locationManagerDidPauseLocationUpdates:(CLLocationManager *)manager
+{
+    NSLog(@"Location Updates: Paused");
+}
+
+- (void)locationManagerDidResumeLocationUpdates:(CLLocationManager *)manager
+{
+    NSLog(@"Location Updates: Resumed");
+}
+
 
 @end
