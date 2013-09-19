@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>C8CF7653-14F4-4E9C-8C0D-FBF610DC40DE</string>
+	<key>IDESourceControlProjectName</key>
+	<string>SignificationLocationChangeTest</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>FB3FC496-CF6C-4588-B83A-E6B2BF4F875B</key>
+		<string>https://github.com/hotngui/SignificantLocationChangeTest.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>SignificationLocationChangeTest.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>FB3FC496-CF6C-4588-B83A-E6B2BF4F875B</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/hotngui/SignificantLocationChangeTest.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>FB3FC496-CF6C-4588-B83A-E6B2BF4F875B</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>FB3FC496-CF6C-4588-B83A-E6B2BF4F875B</string>
+			<key>IDESourceControlWCCName</key>
+			<string>SignificantLocationChangeTest</string>
+		</dict>
+	</array>
+</dict>
+</plist>
