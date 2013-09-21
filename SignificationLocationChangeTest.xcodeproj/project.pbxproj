@@ -143,6 +143,11 @@
 			attributes = {
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "hot-n-GUI, Inc.";
+				TargetAttributes = {
+					D432D33A178F5925008ADB98 = {
+						DevelopmentTeam = 7689FTK2TN;
+					};
+				};
 			};
 			buildConfigurationList = D432D336178F5925008ADB98 /* Build configuration list for PBXProject "SignificationLocationChangeTest" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -268,6 +273,7 @@
 		D432D35F178F5925008ADB98 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SignificationLocationChangeTest/SignificationLocationChangeTest-Prefix.pch";
 				INFOPLIST_FILE = "SignificationLocationChangeTest/SignificationLocationChangeTest-Info.plist";
@@ -279,6 +285,7 @@
 		D432D360178F5925008ADB98 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SignificationLocationChangeTest/SignificationLocationChangeTest-Prefix.pch";
 				INFOPLIST_FILE = "SignificationLocationChangeTest/SignificationLocationChangeTest-Info.plist";
@@ -306,6 +313,7 @@
 				D432D360178F5925008ADB98 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
