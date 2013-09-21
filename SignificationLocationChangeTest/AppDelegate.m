@@ -14,6 +14,8 @@
     @property (nonatomic, weak) ViewController *vc;
 @end
 
+//test from minimac 1
+
 
 @implementation AppDelegate
 
